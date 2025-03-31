@@ -46,6 +46,7 @@ const App = () => {
         }
       )
       toast.success('Succsess')
+      console.log(response2.data);
 
     } catch (error) {
       toast.error('error login!')
