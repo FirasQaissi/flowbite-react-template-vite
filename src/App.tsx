@@ -1,7 +1,8 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
-
 import Countriess from "./Components/CountryCard"
+import { Button } from "flowbite-react";
+import { toast, ToastContainer } from "react-toastify";
 
 
 type Country = {
@@ -21,7 +22,6 @@ const App = () => {
 
   const [countries, setCountries] = useState<Country[]>([])
 
-
   useEffect(() => {
     const getCountries = async () => {
       try {
@@ -32,28 +32,50 @@ const App = () => {
       }
     };
 
+
     getCountries();
   }, []);
 
+  const login = async () => {
+    try {
+      const response2 = await axios.post(
+        'https://monkfish-app-z9uza.ondigitalocean.app/bcard2/users/login',
+        {
+          email: 'admin@gmail.com',
+          password: 'Abc!123Abc',
+        }
+      )
+      toast.success('Succsess')
+
+    } catch (error) {
+      toast.error('error login!')
+
+    }
+  };
+
   return (
-    <div className="flex flex-wrap gap-5 text-2">
-      {countries.map((country, i) => (
-        <Countriess
+    <>
 
-          key={i}
-          name={country.name}
-          capital={country.capital?.[0] || "N/A"}
-          region={country.region}
-          subregion={country.subregion || "N/A"}
-          cca3={country.cca3}
-          flags={{ png: country.flags.png }}
-        />
-      ))}
-    </div>
+      <div className="flex flex-wrap gap-5 text-2">
+        <Button onClick={login}>Login</Button>
 
+        {countries.map((country, i) => (
+          <><Countriess
 
+            key={i}
+            name={country.name}
+            capital={country.capital?.[0] || "N/A"}
+            region={country.region}
+            subregion={country.subregion || "N/A"}
+            cca3={country.cca3}
+            flags={{ png: country.flags.png }} /></>
+        ))}
+
+      </div>
+      <ToastContainer />
+    </>
   )
 
-}
+};
 
 export default App
